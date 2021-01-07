@@ -3,11 +3,11 @@ import { Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import './Checkout.css';
-import { removeProduct } from '../../redux/actions/Cart';
+import { removeProduct, addProduct, emptyCart } from '../../redux/actions/Cart';
 
 
 
-const Checkout = ({cartItems, removeProduct, isAuthenticated}) => {
+const Checkout = ({cartItems, addProduct, removeProduct, emptyCart, isAuthenticated}) => {
 
     const [cartTotal, setCartTotal] = useState(0);
 
@@ -44,7 +44,7 @@ const Checkout = ({cartItems, removeProduct, isAuthenticated}) => {
                     <tr>
                         <td>{product.title}</td>
                         <td>${product.price}</td>
-                        <td>{product.quantity}</td>
+                        <td> <a onClick={ e => removeProduct(product.id)}>-</a> {product.quantity} <a onClick={ e=>addProduct(product)}>+</a></td>
                         <td><button onClick={e => removeProduct(product.id)}>Remove</button></td>
                     </tr>    
                 )
@@ -56,6 +56,8 @@ const Checkout = ({cartItems, removeProduct, isAuthenticated}) => {
             </table>
             <div>
                 <button onClick={e => handleClick(e)}>Place Order</button>
+                <button onClick={emptyCart}>Empty Cart</button>
+
             </div>
         </div>
     )
@@ -66,4 +68,4 @@ const mapStateToProps = state => ({
     isAuthenticated : state.Users.isAuthenticated
 })
 
-export default connect(mapStateToProps, { removeProduct })(Checkout);
+export default connect(mapStateToProps, { removeProduct, addProduct, emptyCart })(Checkout);

@@ -6,6 +6,12 @@ export const addProduct = (product) => dispatch => {
     })
 };
 
+export const emptyCart = () => dispatch => {
+    dispatch({
+        type : 'EMPTY_CART'
+    })
+};
+
 export const removeProduct = (productID) => dispatch => {
     dispatch({
         type: 'REMOVE_PRODUCT',
@@ -29,4 +35,21 @@ export const cartAddItem = (itemToAdd, cartItems) => {
     return(
         [...cartItems, itemToAdd]
     )
+}
+
+export const removeItemFromCart = (cartItems, itemToBeRemoved) => {
+    const existingItem = cartItems.find(cartItem => cartItem.id === itemToBeRemoved);
+
+    if(existingItem.quantity === 1){
+        return cartItems.filter(cartItem => cartItem.id !== itemToBeRemoved)
+    }
+    else{
+        return cartItems.map(cartItem => 
+            cartItem.id === itemToBeRemoved ?
+            {...cartItem, quantity : cartItem.quantity - 1}
+            :
+            cartItem
+        )
+    }
+    
 }
